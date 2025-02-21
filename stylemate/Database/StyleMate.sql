@@ -1,0 +1,96 @@
+DROP DATABASE IF EXISTS ClothingDB;
+CREATE DATABASE ClothingDB;
+USE ClothingDB;
+
+-- Categories Table
+CREATE TABLE Categories (
+    category_id INT AUTO_INCREMENT PRIMARY KEY,
+    category_name VARCHAR(50) UNIQUE NOT NULL
+);
+
+-- Subcategories Table
+CREATE TABLE Subcategories (
+    subcategory_id INT AUTO_INCREMENT PRIMARY KEY,
+    subcategory_name VARCHAR(50) NOT NULL,
+    category_id INT,
+    FOREIGN KEY (category_id) REFERENCES Categories(category_id) ON DELETE CASCADE
+);
+
+-- Clothing Items Table
+CREATE TABLE ClothingItems (
+    item_id INT AUTO_INCREMENT PRIMARY KEY,
+    item_name VARCHAR(100) NOT NULL,
+    description TEXT,
+    subcategory_id INT,
+    color VARCHAR(50),
+    brand VARCHAR(100),
+    image_url VARCHAR(255),  -- Image link for clothing item
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (subcategory_id) REFERENCES Subcategories(subcategory_id) ON DELETE SET NULL
+);
+
+-- Users Table (For Closet)
+CREATE TABLE Users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Closet (Individual Items Owned by Users)
+CREATE TABLE Closet (
+    closet_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    item_id INT,
+    date_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES ClothingItems(item_id) ON DELETE CASCADE
+);
+
+-- Outfit Sets (Collection of Multiple Items)
+CREATE TABLE OutfitSets (
+    outfit_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    outfit_name VARCHAR(100) NOT NULL,
+    outfit_image_url VARCHAR(255),  -- Image representing the whole outfit
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+);
+
+-- Outfit Items (Relationship Between Outfits & Clothing Items)
+CREATE TABLE OutfitItems (
+    outfit_item_id INT AUTO_INCREMENT PRIMARY KEY,
+    outfit_id INT,
+    item_id INT,
+    FOREIGN KEY (outfit_id) REFERENCES OutfitSets(outfit_id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES ClothingItems(item_id) ON DELETE CASCADE
+);
+
+
+
+INSERT INTO Categories (category_name) VALUES 
+('Head Accessory'), 
+('Top'), 
+('Jacket/Outerwear'), 
+('Bottoms'), 
+('One-piece'), 
+('Footwear');
+
+INSERT INTO Subcategories (subcategory_name, category_id) VALUES
+('Hat', 1), 
+('Sunglasses', 1),
+('Shirts', 2), 
+('Jersey', 2),
+('Jackets', 3), 
+('Hoodies', 3),
+('Pants', 4), 
+('Shorts', 4), 
+('Skirts', 4),
+('Dress', 5), 
+('Overalls', 5), 
+('Onesie', 5),
+('Shoes', 6), 
+('Sandals', 6), 
+('Heels', 6);
+
