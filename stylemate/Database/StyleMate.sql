@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS ClothingDB;
-CREATE DATABASE ClothingDB;
-USE ClothingDB;
+DROP DATABASE IF EXISTS stylemate_database;
+CREATE DATABASE stylemate_database;
+USE stylemate_database;
 
 -- Categories Table
 CREATE TABLE Categories (
@@ -48,25 +48,33 @@ CREATE TABLE Closet (
     FOREIGN KEY (item_id) REFERENCES ClothingItems(item_id) ON DELETE CASCADE
 );
 
--- Outfit Sets (Collection of Multiple Items)
+-- Outfit Sets (Collection of 5 Items - Head Accessory, Shirt, Outerwear, Pants, Shoes)
 CREATE TABLE OutfitSets (
     outfit_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     outfit_name VARCHAR(100) NOT NULL,
-    outfit_image_url VARCHAR(255),  -- Image representing the whole outfit
+	head_accessory_item_id INT,
+    top_item_id INT,
+    outerwear_item_id INT,
+    bottom_item_id INT,
+    footwear_item_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (head_accessory_item_id) REFERENCES ClothingItems(item_id) ON DELETE SET NULL,
+    FOREIGN KEY (top_item_id) REFERENCES ClothingItems(item_id) ON DELETE SET NULL,
+    FOREIGN KEY (outerwear_item_id) REFERENCES ClothingItems(item_id) ON DELETE SET NULL,
+    FOREIGN KEY (bottom_item_id) REFERENCES ClothingItems(item_id) ON DELETE SET NULL,
+    FOREIGN KEY (footwear_item_id) REFERENCES ClothingItems(item_id) ON DELETE SET NULL
 );
 
--- Outfit Items (Relationship Between Outfits & Clothing Items)
-CREATE TABLE OutfitItems (
-    outfit_item_id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE SavedOutfits (
+	saved_outfit_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
     outfit_id INT,
-    item_id INT,
-    FOREIGN KEY (outfit_id) REFERENCES OutfitSets(outfit_id) ON DELETE CASCADE,
-    FOREIGN KEY (item_id) REFERENCES ClothingItems(item_id) ON DELETE CASCADE
+    saved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (outfit_id) REFERENCES OutfitSets(outfit_id) ON DELETE CASCADE
 );
-
 
 
 INSERT INTO Categories (category_name) VALUES 
@@ -74,7 +82,6 @@ INSERT INTO Categories (category_name) VALUES
 ('Top'), 
 ('Jacket/Outerwear'), 
 ('Bottoms'), 
-('One-piece'), 
 ('Footwear');
 
 INSERT INTO Subcategories (subcategory_name, category_id) VALUES
@@ -87,9 +94,7 @@ INSERT INTO Subcategories (subcategory_name, category_id) VALUES
 ('Pants', 4), 
 ('Shorts', 4), 
 ('Skirts', 4),
-('Dress', 5), 
-('Overalls', 5), 
-('Onesie', 5),
+('Dress', 4), -- need gemini to detect dresses and reccommend bottoms accordingly
 ('Shoes', 6), 
 ('Sandals', 6), 
 ('Heels', 6);
