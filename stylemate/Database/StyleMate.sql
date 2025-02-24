@@ -95,7 +95,7 @@ INSERT INTO Subcategories (subcategory_name, category_id) VALUES
 ('Shorts', 4), 
 ('Skirts', 4),
 ('Dress', 4), -- need gemini to detect dresses and reccommend bottoms accordingly
-('Shoes', 6), 
-('Sandals', 6), 
-('Heels', 6);
+('Shoes', 5), 
+('Sandals', 5), 
+('Heels', 5);
 
