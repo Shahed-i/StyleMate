@@ -54,14 +54,14 @@ VALUES
 
 -- 4. Insert sample OutfitSets
 -- Creating an outfit set for Alice using her items:
-INSERT INTO OutfitSets (user_id, outfit_name, head_accessory_item_id, top_item_id, outerwear_item_id, bottom_item_id, footwear_item_id)
+INSERT INTO OutfitSets (user_id, outfit_name, head_accessory_item_id, top_item_id, outerwear_item_id, bottom_item_id, footwear_item_id, current_weather)
 VALUES 
-(1, 'Casual Cool', 1, 3, 5, 7, 9);
+(1, 'Casual Cool', 1, 3, 5, 7, 9, 'Sunny');
 
 -- Creating an outfit set for Bob using his items:
-INSERT INTO OutfitSets (user_id, outfit_name, head_accessory_item_id, top_item_id, outerwear_item_id, bottom_item_id, footwear_item_id)
+INSERT INTO OutfitSets (user_id, outfit_name, head_accessory_item_id, top_item_id, outerwear_item_id, bottom_item_id, footwear_item_id, current_weather)
 VALUES 
-(2, 'Laid-back Look', 2, 4, 6, 8, 10);
+(2, 'Laid-back Look', 2, 4, 6, 8, 10, 'Snowy');
 
 -- 5. Insert sample SavedOutfits
 -- Alice saves Bob's outfit, and Bob saves Alice's outfit:

@@ -34,8 +34,7 @@ CREATE TABLE Users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    password_hash VARCHAR(255) NOT NULL
 );
 
 -- Closet (Individual Items Owned by Users)
@@ -43,13 +42,13 @@ CREATE TABLE Closet (
     closet_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     item_id INT,
-    date_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (item_id) REFERENCES ClothingItems(item_id) ON DELETE CASCADE
 );
 
 -- Outfit Sets (Collection of 5 Items - Head Accessory, Shirt, Outerwear, Pants, Shoes)
 CREATE TABLE OutfitSets (
+-- add occasion and weather 
     outfit_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     outfit_name VARCHAR(100) NOT NULL,
@@ -58,7 +57,7 @@ CREATE TABLE OutfitSets (
     outerwear_item_id INT,
     bottom_item_id INT,
     footwear_item_id INT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    current_weather VARCHAR(100),
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (head_accessory_item_id) REFERENCES ClothingItems(item_id) ON DELETE SET NULL,
     FOREIGN KEY (top_item_id) REFERENCES ClothingItems(item_id) ON DELETE SET NULL,
@@ -71,7 +70,6 @@ CREATE TABLE SavedOutfits (
 	saved_outfit_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     outfit_id INT,
-    saved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (outfit_id) REFERENCES OutfitSets(outfit_id) ON DELETE CASCADE
 );
