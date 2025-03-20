@@ -1,0 +1,22 @@
+databases:
+  - name: stylematedb
+    plan: free
+    databaseName: stylemate
+    user: root
+
+services:
+  - type: web
+    plan: free
+    name: stylemate-app
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "python -m gunicorn app.asgi:application -k uvicorn.workers.UvicornWorker"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: stylematedb
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
